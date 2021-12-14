@@ -4,6 +4,6 @@ Link da aplicação: <a target="_blank" href="https://bd-final-backend.herokuapp
 
 | Rotas        | Descrição      |  
 |     :---:    |     :---:      |
-| /     | Retornar uma lista de todos os produtos|
-| /products     | Retornar uma lista de todos os produtos|
+| /     | Retornar uma lista com todos os produtos|
+| /products     | Retornar uma lista com todos os produtos|
 | /products/:id| Retornar o produto com o id estabelecido|
