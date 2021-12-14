@@ -1,6 +1,6 @@
 # Backend da ultima parte do projeto
 
-Link da aplicação: <a href="https://bd-final-backend.herokuapp.com/products">https://bd-final-backend.herokuapp.com/products</a>
+Link da aplicação: <a target="_blank" href="https://bd-final-backend.herokuapp.com/products">https://bd-final-backend.herokuapp.com/products</a>
 
 | Rotas        | Descrição      |  
 |     :---:    |     :---:      |
