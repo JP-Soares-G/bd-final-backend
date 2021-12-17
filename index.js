@@ -15,7 +15,7 @@ app.use(bodyParser.json())
 app.use("/products", products)
 
 app.get('/', (req, res) => {
-    res.redirect("/products")  
+    res.redirect("/products/1")  
 })
 
 const port = process.env.PORT || 3000
