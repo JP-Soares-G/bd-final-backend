@@ -21,7 +21,7 @@ router.post('/', (req, res) => {
 router.get('/:id', (req, res) => {
     const id = req.params.id
 
-    pool.query(`SELECT * FROM prod_categories pc 
+    pool.query(`SELECT id, name, amount, sales_avg, description, catg_id FROM prod_categories pc 
 	                JOIN products p ON (pc.prod_id = p.id)
 	                WHERE pc.catg_id = $1`, [id])
         .then(results => res.json(results.rows))
