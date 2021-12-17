@@ -12,7 +12,7 @@ app.use(cors())
 app.use(bodyParser.json())
 
 //route
-app.use("/products/1", products)
+app.use("/products", products)
 
 app.get('/', (req, res) => {
     res.redirect("/products")  
