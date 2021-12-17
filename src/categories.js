@@ -24,7 +24,7 @@ router.get('/:id', (req, res) => {
     pool.query(`SELECT id, name, amount, sales_avg, description, catg_id FROM prod_categories pc 
 	                JOIN products p ON (pc.prod_id = p.id)
 	                WHERE pc.catg_id = $1`, [id])
-        .then(results => res.json(results.rows))
+        .then(results => res.json(results.rows || []))
         .catch(err => res.json(err))
 })
 
