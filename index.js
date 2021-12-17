@@ -12,10 +12,10 @@ app.use(cors())
 app.use(bodyParser.json())
 
 //route
-app.use("/products", products)
+app.use("/products/1", products)
 
 app.get('/', (req, res) => {
-    res.redirect("/products/1")  
+    res.redirect("/products")  
 })
 
 const port = process.env.PORT || 3000
