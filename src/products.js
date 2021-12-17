@@ -2,7 +2,6 @@ const express = require('express')
 const router = express.Router();
 const async = require('async')
 const pool = require('./db');
-const { waterfall } = require('async');
 
 router.get("/", (req, res) => {
     pool.query('SELECT * FROM products ORDER BY id ASC')
@@ -14,8 +13,27 @@ router.get("/:id", (req, res) => {
     // res.json(Object.keys(req.params.id))
     const {id} = req.params
     // res.json({id: id})
-    pool.query('SELECT * FROM products WHERE id = $1', [id])
-        .then(results => res.json(results.rows))
+    pool.query(`SELECT p.id, p.name, p.amount, p.sales_avg, p.description,
+                    c.name as categoria
+                    FROM products p
+                    JOIN prod_categories pc ON (p.id = pc.prod_id)
+                    JOIN categories c ON (c.id = pc.catg_id)
+                    WHERE p.id = $1`, [id])
+        .then(results => {
+            let categories = [];
+            for(let i = 0; i < results.rows.length; i++){
+                categories.push(results.rows[i].categoria)
+            }
+            let finalResult = {
+                id: results.rows[0].id,
+                name: results.rows[0].name,
+                amount: results.rows[0].amount,
+                sales_avg: results.rows[0].sales_avg,
+                description: results.rows[0].description,
+                categories
+            }
+            res.json(finalResult)
+        })
         .catch(err => res.json(err))
 })
 
@@ -68,7 +86,7 @@ router.delete("/:id", (req, res) => {
             callback()
         }, 
         function(callback){
-            pool.query("DELETE FROM products WHERE prod_id = $1", [id])
+            pool.query("DELETE FROM products WHERE id = $1", [id])
             callback()
         }
     ], 

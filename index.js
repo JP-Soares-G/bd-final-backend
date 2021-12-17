@@ -2,6 +2,7 @@ const express = require('express')
 const app = express()
 
 const products = require('./src/products')
+const categories = require('./src/categories')
 
 const bodyParser = require('body-parser')
 const cors = require('cors')
@@ -13,6 +14,7 @@ app.use(bodyParser.json())
 
 //route
 app.use("/products", products)
+app.use("/categories", categories)
 
 app.get('/', (req, res) => {
     res.redirect("/products")  
