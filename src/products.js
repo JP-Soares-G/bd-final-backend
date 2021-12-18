@@ -3,6 +3,7 @@ const router = express.Router();
 const async = require('async')
 const pool = require('./db');
 
+// lista todos os produtos (retorna só uma categoria, já que é pra ser exibido na tela inicial)
 router.get("/", (req, res) => {
     pool.query(`SELECT DISTINCT p.id, p.name, p.amount, p.sales_avg, p.description, c.name as category
                 FROM products p
@@ -12,6 +13,7 @@ router.get("/", (req, res) => {
         .catch(err => res.json(err))
 })
 
+// retornar as informações do produto do id utilizado como parametro
 router.get("/:id", (req, res) => {
     // res.json(Object.keys(req.params.id))
     const {id} = req.params
@@ -22,7 +24,7 @@ router.get("/:id", (req, res) => {
                     LEFT JOIN prod_categories pc ON (p.id = pc.prod_id)
                     LEFT JOIN categories c ON (c.id = pc.catg_id)
                     WHERE p.id = $1`, [id])
-        .then(results => {
+        .then(results => {  
             let categories = [];
             for(let i = 0; i < results.rows.length; i++){
                 categories.push(results.rows[i].categoria)
@@ -39,7 +41,7 @@ router.get("/:id", (req, res) => {
         })
         .catch(err => res.json(err))
 })
-
+//função auxiliar para inserir todos os produtos simultaneamente
 const insertCategoriesIntoProducts = (categories, product, cb) => {
     let prod_categories = []
     const insertCat = (category, callback) => {
@@ -55,7 +57,7 @@ const insertCategoriesIntoProducts = (categories, product, cb) => {
         .then(() => cb(null, {...product, categories: prod_categories}))
         .catch(err => console.log(err))
 }
-
+//inserir produto
 router.post("/", (req, res) => {
     async.waterfall([
         function(callback){
@@ -80,7 +82,7 @@ router.post("/", (req, res) => {
     })
     
 })
-
+// remover produto de id utilizado como parametro
 router.delete("/:id", (req, res) => {
     const {id} = req.params
     async.series([
@@ -99,6 +101,7 @@ router.delete("/:id", (req, res) => {
     })
 })
 
+//alterar o produto de id utilizado como parametro
 router.put("/:id", (req, res) => {
     const {id} = req.params
     const {name, amount, sales_avg, description} = req.body
