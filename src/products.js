@@ -4,7 +4,10 @@ const async = require('async')
 const pool = require('./db');
 
 router.get("/", (req, res) => {
-    pool.query('SELECT * FROM products ORDER BY id ASC')
+    pool.query(`SELECT DISTINCT p.id, p.name, p.amount, p.sales_avg, p.description, c.name as category
+                FROM products p
+                LEFT JOIN prod_categories pc ON (p.id = pc.prod_id)
+                LEFT JOIN categories c ON (c.id = pc.catg_id)`)
         .then(results => res.json(results.rows))
         .catch(err => res.json(err))
 })
@@ -20,7 +23,6 @@ router.get("/:id", (req, res) => {
                     LEFT JOIN categories c ON (c.id = pc.catg_id)
                     WHERE p.id = $1`, [id])
         .then(results => {
-            console.log(results.rows)
             let categories = [];
             for(let i = 0; i < results.rows.length; i++){
                 categories.push(results.rows[i].categoria)
