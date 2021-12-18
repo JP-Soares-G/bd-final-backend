@@ -16,10 +16,11 @@ router.get("/:id", (req, res) => {
     pool.query(`SELECT p.id, p.name, p.amount, p.sales_avg, p.description,
                     c.name as categoria
                     FROM products p
-                    JOIN prod_categories pc ON (p.id = pc.prod_id)
-                    JOIN categories c ON (c.id = pc.catg_id)
+                    LEFT JOIN prod_categories pc ON (p.id = pc.prod_id)
+                    LEFT JOIN categories c ON (c.id = pc.catg_id)
                     WHERE p.id = $1`, [id])
         .then(results => {
+            console.log(results.rows)
             let categories = [];
             for(let i = 0; i < results.rows.length; i++){
                 categories.push(results.rows[i].categoria)
