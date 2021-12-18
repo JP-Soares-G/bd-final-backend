@@ -4,12 +4,14 @@ const async = require('async')
 
 const pool = require('./db');
 
+// lista todas as categorias
 router.get('/', (req, res) => {
     pool.query('SELECT * FROM categories')
         .then(table => res.json(table.rows))
         .catch(err => res.json(err))
 })
 
+// adiciona uma nova categoria
 router.post('/', (req, res) => {
     const name = req.body.name
 
@@ -18,6 +20,7 @@ router.post('/', (req, res) => {
         .catch(err => res.json({message: 'Algo inexperado ocorreu!', ...err}))
 })
 
+// retornar todos os produtos da categoria de id utilizado como parametro
 router.get('/:id', (req, res) => {
     const id = req.params.id
 
@@ -28,6 +31,7 @@ router.get('/:id', (req, res) => {
         .catch(err => res.json(err))
 })
 
+// deleta categoria de id utilizado como parametro
 router.delete('/:id', (req, res) => {
     const id = req.params.id
     
@@ -48,6 +52,7 @@ router.delete('/:id', (req, res) => {
 
 })
 
+//atualiza categoria de id utilizado como parametro
 router.put('/:id', (req, res) => {
     const name = req.body.name
     const id = req.params.id
